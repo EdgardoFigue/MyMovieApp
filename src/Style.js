@@ -75,6 +75,37 @@ const styles = StyleSheet.create({
       paddingRight : scale(10),
       justifyContent: 'center',
   },
+  container: {
+    flex: 1,
+    backgroundColor: '#e8e7e3',
+  },
+  cardView: {
+    backgroundColor: "white",
+    margin: 10,
+    elevation: 5
+  },
+  buttonContainer: {
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 5,
+    backgroundColor: "#02ADAD",
+    width: 80,
+    borderRadius: 10
+  },
+  buttonText: { color: "white", margin: 5, alignSelf: "center" },
+  lineView: { height: 2, marginTop: 10, backgroundColor: "#EDEDED" },
+  movieList: { marginLeft: 10, marginRight: 10, backgroundColor: "white", elevation: 10 },
+  imageMainMenu: { width: 100, height: 180, marginLeft: 5, marginRight: 20 },
+  rowView: { flexDirection: "row", marginTop: 10 },
+  movieCard: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    marginTop: 10,
+    backgroundColor: "white",
+    elevation: 10
+  },
+  imageMovieDetail: { width: 180, height: 220, marginLeft: 5, margin: 20 }
 });
 
 export default styles;

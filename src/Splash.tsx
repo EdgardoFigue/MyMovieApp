@@ -2,8 +2,11 @@ import React, { Component  } from 'react'
 import { View } from 'react-native'
 import LottieView from 'lottie-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { NavigationScreenProp } from 'react-navigation';
 
-type Props = {};
+type Props = {
+    navigation: NavigationScreenProp<any,any>
+};
 
 export default class Splash extends Component<Props> {
     constructor(props: Props) {
@@ -38,10 +41,10 @@ export default class Splash extends Component<Props> {
             console.log(value)
             if (value !== null && value !== '') {
                 console.log('token exist. goto Main Menu')
-                this.props.navigation.replace('Home')
+                this.props.navigation.navigate('Home')
             } else {
                 console.log('token wasnt found. goto Login')
-                this.props.navigation.replace('Login')
+                this.props.navigation.navigate('Login')
             }
         } catch (error) {
             // Error retrieving data

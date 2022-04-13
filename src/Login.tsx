@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import styles from './Style';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import { NavigationScreenProp } from 'react-navigation';
 
 import {
     TextInput,
@@ -14,7 +14,9 @@ import {
     PermissionsAndroid
 } from 'react-native';
 
-type Props = {};
+type Props = {
+    navigation: NavigationScreenProp<any,any>
+};
 
 export default class LoginForm extends Component<Props> {
     constructor(props: Props) {
@@ -30,8 +32,11 @@ export default class LoginForm extends Component<Props> {
         backgroundColorPass: '#FFFFFF',
     };
 
+    
 
     render() {
+
+        const iconImage = require('../resources/iconLogin.jpeg');
 
         return (
 
@@ -41,8 +46,9 @@ export default class LoginForm extends Component<Props> {
             <SafeAreaView style={styles.safeArea}>
             <View style={styles.loginformcontainer}>
 
-                <Image source = {require('../resources/iconLogin.jpeg')} style={styles.logo}>
-                </Image>
+                
+
+                <Image source = { iconImage } style={styles.logo} />
        
                 <View style={styles.inputView}>
                     <Text style={styles.loginFieldsText}>Usuario</Text>
@@ -119,7 +125,7 @@ export default class LoginForm extends Component<Props> {
             console.log(this.state.token)
             this._storeData();
 
-            this.props.navigation.replace('Home')
+            this.props.navigation.navigate('Home')
 
             //this.FunctionToOpenSecondActivity();
             

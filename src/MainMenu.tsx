@@ -68,6 +68,8 @@ class MainScreen extends Component<Props> {
                 placeholder={Constants.Strings.PLACEHOLDER}
                 onChangeText={text => this.setState({ searchText: text })}
                 underlineColorAndroid={Constants.Colors.Transparent}
+                returnKeyType='search'
+                onSubmitEditing = {this.searchButtonPressed}
               />
               <View style={{ height: 1, backgroundColor: Constants.Colors.Grey, margin: 0 }} />
             </View>

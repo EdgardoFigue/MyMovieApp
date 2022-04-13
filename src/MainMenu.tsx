@@ -7,6 +7,7 @@ import { renderIf } from "../utilities/CommonMethods";
 import Styles from "./Style";
 import { customAlert } from "./../utilities/CommonMethods";
 import { NavigationScreenProp } from 'react-navigation';
+import { Rating  } from 'react-native-ratings';
 
 
  type Props = {
@@ -111,8 +112,12 @@ class MainScreen extends Component<Props> {
                           <Text>{obj.original_language}</Text>
                         </View>
                         <View style={Styles.rowView}>
-                          <Text>{Constants.Strings.POPULARITY}</Text>
-                          <Text>{obj.popularity} %</Text>
+                          <Text>{Constants.Strings.RATINGS}</Text>
+                          <Rating
+                              imageSize={20}
+                              ratingCount = {5}
+                              startingValue={obj.vote_average/2}
+                          />
                         </View>
                       </View>
                     </View>

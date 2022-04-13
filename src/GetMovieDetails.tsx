@@ -4,6 +4,7 @@ import Constants from "../utilities/Constants";
 import { callRemoteMethod } from "../utilities/WebServiceHandler";
 import Loader from "../utilities/Loader";
 import Styles from "./Style";
+import { Rating  } from 'react-native-ratings';
 
 import { NavigationScreenProp } from 'react-navigation';
 
@@ -62,14 +63,16 @@ export default class GetMovieDetail extends Component<Props> {
           </View>
           <View style={{ flexDirection: "row", margin: 10 }}>
             <Text style={{ flex: 0.5 }}>{Constants.Strings.RATINGS}</Text>
-            <Text style={{ flex: 0.5 }}>
-              {this.state.movieDetails.vote_average}
-              /10
-            </Text>
+            <Rating 
+                  style = {{flex : 0.3}}
+                  imageSize={20}
+                  ratingCount = {5}
+                  startingValue={this.state.movieDetails.vote_average}
+              />
           </View>
           <View style={{ flexDirection: "row", margin: 10 }}>
             <Text style={{ flex: 0.5 }}>{Constants.Strings.POPULARITY}</Text>
-            <Text style={{ flex: 0.5 }}>{this.state.movieDetails.popularity}%</Text>
+            <Text style={{ flex: 0.5 }}>{this.state.movieDetails.popularity}</Text>
           </View>
           <View style={{ flexDirection: "row", margin: 10 }}>
             <Text style={{ flex: 0.5 }}>{Constants.Strings.BUDGET}</Text>

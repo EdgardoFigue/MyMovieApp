@@ -41,7 +41,7 @@ export default class Splash extends Component<Props> {
             console.log(value)
             if (value !== null && value !== '') {
                 console.log('token exist. goto Main Menu')
-                this.props.navigation.navigate('Home')
+                this.props.navigation.navigate('Login')
             } else {
                 console.log('token wasnt found. goto Login')
                 this.props.navigation.navigate('Login')

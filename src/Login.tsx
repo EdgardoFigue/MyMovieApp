@@ -72,9 +72,8 @@ export default class LoginForm extends Component<Props> {
                 </View>   
                 <TouchableOpacity
                     style={styles.registerScreenButton}
-                    /*onPress={() => this._validateFields()}>*/
-                    /*onPress={this.FunctionToOpenSecondActivity}>*/
-                    onPress={this._login.bind( this )}>
+                    onPress={() => this._validateFields()}
+                    /*onPress={this._login.bind( this )}*/>
                     <Text style={styles.loginText}>Iniciar Sesión</Text>
                 </TouchableOpacity>
                     
@@ -88,11 +87,15 @@ export default class LoginForm extends Component<Props> {
     _validateFields() {
         if (this.state.email == '') {
             this.setState({ backgroundColorUser: 'red' });
+            this.setState({ backgroundColorPass: '#FFFFFF' });
         } else if (this.state.password == '') {
+            this.setState({ backgroundColorUser: '#FFFFFF' });
             this.setState({ backgroundColorPass: 'red' });
         } else {
             if (!this._validateEmail(this.state.email)) {
-            Alert.alert("INGRESE UN EMAIL VALIDO")
+                this.setState({ backgroundColorUser: 'red' });
+                this.setState({ backgroundColorPass: '#FFFFFF' });
+                Alert.alert("INGRESE UN EMAIL VALIDO")
             } else {
                 this._login();
             }
@@ -113,19 +116,26 @@ export default class LoginForm extends Component<Props> {
         'Content-Type':'application/json',
         },
         body:JSON.stringify({
-            email: 'eve.holt@reqres.in',
-            password: 'cityslicka'
+            email: this.state.email,
+            password: this.state.password
         })
 
         })
-        .then((response)=>response.json())
-        .then((res)=>{
+        .then((response) => {
+
+            if (response.ok) {
+
+                response.json().then((data) => {
             
-            this.setState({token: res.token});
-            console.log(this.state.token)
-            this._storeData();
+                    this.setState({token: data.token});
+                    console.log(this.state.token)
+                    this._storeData();
 
-            this.props.navigation.navigate('Home')
+                    this.props.navigation.navigate('Home')
+                })
+            }  else if (response.status === 400) {
+                Alert.alert("  LOGIN FAILED!");
+            }
 
             //this.FunctionToOpenSecondActivity();
             

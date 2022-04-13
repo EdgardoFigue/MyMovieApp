@@ -1,12 +1,14 @@
-import { View, Text, StatusBar, ScrollView, Image } from "react-native";
+import { View, Text, StatusBar, ScrollView, Image, TouchableOpacity } from "react-native";
 import React, { Component } from "react";
 import Constants from "../utilities/Constants";
 import { callRemoteMethod } from "../utilities/WebServiceHandler";
 import Loader from "../utilities/Loader";
 import Styles from "./Style";
 import { Rating  } from 'react-native-ratings';
+import { renderIf } from "../utilities/CommonMethods";
 
 import { NavigationScreenProp } from 'react-navigation';
+import styles from "./Style";
 
 
  type Props = {
@@ -18,12 +20,16 @@ export default class GetMovieDetail extends Component<Props> {
   constructor(props: Props) {
       super(props);
       console.log("Process Start")
+      this.getMoviesRelated();
   } 
 
 
+
   state = {
-    movieDetails: {}, // Aqui obtenemos los detalles de peloicula seleccionada
-    isLoading: false // Mostrar Dialogo de Carga
+    movieDetails: {}, // Aqui obtenemos los detalles de pelicula seleccionada
+    movieList: [], // Lista de peliculas relacionadas
+    isLoading: false, // Mostrar Dialogo de Carga
+    noData: false // Estado si la busqueda no obtiene resultados
   };
 
   componentDidMount() {
@@ -31,12 +37,25 @@ export default class GetMovieDetail extends Component<Props> {
   }
 
   getMovieDetails = () => {
+    console.log("entra en getMovieDetails ")
     var endpoint = Constants.URL.BASE_URL + "movie/" + this.props.navigation.state.params.id + "?" + Constants.URL.API_KEY;
     callRemoteMethod(this, endpoint, {}, "getMovieDetailsCallback", "GET", true);
   };
 
   getMovieDetailsCallback = response => {
     this.setState({ movieDetails: response });
+  };
+
+  getMoviesRelated = () => {
+    console.log("entra en getMoviesRelated ")
+    var endpoint = Constants.URL.BASE_URL + "movie/" + this.props.navigation.state.params.id + "/similar" + "?" + Constants.URL.API_KEY;
+    callRemoteMethod(this, endpoint, {}, "getMovieRelatedCallback", "GET", true);
+  };
+
+  getMovieRelatedCallback = response => {
+    console.log("entra en getMovieRelatedCallback ")
+    this.setState({ movieList: response.results });
+    this.setState({ noData: false });
   };
 
   render() {
@@ -96,6 +115,62 @@ export default class GetMovieDetail extends Component<Props> {
           <View style={{ margin: 10 }}>
             <Text style={{ flexWrap: "wrap", flex: 0.8 }}>{this.state.movieDetails.overview}</Text>
           </View>
+
+
+        {renderIf(this.state.noData, <Text style={{ textAlign: "center" }}>No data found.</Text>)}
+        {renderIf(
+          this.state.movieList.length,
+          <ScrollView horizontal = {true} >
+            <View>
+              <Text style = {styles.relatedMoviesText} >
+                  Related Movies
+              </Text>
+              {this.state.movieList.map(function(obj, i) {
+                return (
+                  <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate("GetMovieDetail", { id: obj.id })}
+                    key={i}
+                    style={{ margin: 10, marginBottom: 5 }}>
+                    <View style={{ flexDirection: "row" }}>
+                      <Image
+                        style={Styles.imageMainMenu}
+                        source={{
+                          uri:
+                            obj.poster_path != null
+                              ? Constants.URL.IMAGE_URL + obj.poster_path
+                              : Constants.URL.PLACEHOLDER_IMAGE
+                        }}
+                      />
+                      <View style={{ flexDirection: "column" }}>
+                        <Text numberOfLines={3} style={{ fontSize: 17 }}>
+                          {obj.original_title}
+                        </Text>
+                        <View style={Styles.rowView}>
+                          <Text>{Constants.Strings.RELEASE_DATE}</Text>
+                          <Text>{obj.release_date}</Text>
+                        </View>
+                        <View style={Styles.rowView}>
+                          <Text>{Constants.Strings.LANGUAGE}</Text>
+                          <Text>{obj.original_language}</Text>
+                        </View>
+                        <View style={Styles.rowView}>
+                          <Text>{Constants.Strings.RATINGS}</Text>
+                          <Rating
+                              imageSize={20}
+                              ratingCount = {5}
+                              startingValue={obj.vote_average/2}
+                          />
+                        </View>
+                      </View>
+                    </View>
+                    <View style={Styles.lineView} />
+                  </TouchableOpacity>
+                );
+              }, this)}
+            </View>
+          </ScrollView>
+        )}
+          
         </ScrollView>
       </View>
     );

@@ -105,7 +105,22 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     elevation: 10
   },
-  imageMovieDetail: { width: 180, height: 220, marginLeft: 5, margin: 20 }
+  imageMovieDetail: { width: 180, height: 220, marginLeft: 5, margin: 20 },
+  similarsMovies: {
+    marginTop: 10,
+    width: 180,
+    backgroundColor: 'black',
+    height: 150,
+    flexDirection: 'row'
+  },
+  relatedMoviesText: {
+    textAlign:'left',
+    fontSize: 20,
+    marginTop: 20,
+    marginLeft: 10,
+    marginBottom: 20,
+    fontFamily: 'bold'
+  }
 });
 
 export default styles;
